@@ -13,54 +13,26 @@ The [OWASP Top 10](https://owasp.org/Top10/) is a standard awareness document fo
 ## Mapped Rules
 
 ### A01:2021 – Broken Access Control
-- Rule B001: Implement proper authentication checks
-- Rule B002: Validate access permissions before operations
-- Rule B003: Use secureSocket for transport-level security
+
+- **ballerina/io:1**: I/O function calls should not be vulnerable to path injection attacks
 
 ### A02:2021 – Cryptographic Failures
-- Rule B004: Use strong encryption algorithms
-- Rule B005: Avoid hardcoded cryptographic keys
-- Rule B006: Properly validate certificates
 
 ### A03:2021 – Injection
-- Rule B007: Use parameterized queries for SQL operations
-- Rule B008: Sanitize inputs for HTTP services
-- Rule B009: Validate all external data
 
 ### A04:2021 – Insecure Design
-- Rule B010: Follow threat modeling guidelines
-- Rule B011: Implement defense in depth
-- Rule B012: Use security by design principles
 
 ### A05:2021 – Security Misconfiguration
-- Rule B013: Avoid default credentials
-- Rule B014: Disable debug features in production
-- Rule B015: Use secure configuration management
 
 ### A06:2021 – Vulnerable and Outdated Components
-- Rule B016: Regular dependency updates
-- Rule B017: Version pinning best practices
-- Rule B018: Audit for vulnerable components
 
 ### A07:2021 – Identification and Authentication Failures
-- Rule B019: Implement secure password handling
-- Rule B020: Use multi-factor authentication when possible
-- Rule B021: Secure session management
 
 ### A08:2021 – Software and Data Integrity Failures
-- Rule B022: Validate data integrity with checksums
-- Rule B023: Securely handle deserialization
-- Rule B024: Verify critical data sources
 
 ### A09:2021 – Security Logging and Monitoring Failures
-- Rule B025: Implement proper error logging
-- Rule B026: Audit security-relevant events
-- Rule B027: Monitor for suspicious activities
 
 ### A10:2021 – Server-Side Request Forgery
-- Rule B028: Validate URLs in HTTP clients
-- Rule B029: Implement allowlists for external services
-- Rule B030: Use proxy validation for outbound requests
 
 ## Installation and Usage
 
