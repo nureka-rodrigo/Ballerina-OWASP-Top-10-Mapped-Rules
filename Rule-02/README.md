@@ -5,7 +5,7 @@
 | **Rule Description** | Server-side requests should not be vulnerable to traversing attacks |
 | **Rule Kind** | Vulnerability |
 | **Mapped OWSAPs** | [A10:2021 – Server-Side Request Forgery (SSRF)](https://owasp.org/Top10/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/)<br>[A01:2021 – Broken Access Control](https://owasp.org/Top10/A01_2021-Broken_Access_Control/) |
-| **Mapped CWEs** | [CWE-20](https://cwe.mitre.org/data/definitions/20.html): Improper Input Validation<br>[CWE-918](https://cwe.mitre.org/data/definitions/918.html): Server-Side Request Forgery (SSRF) |
+| **Mapped CWEs** | [CWE-20: Improper Input Validation](https://cwe.mitre.org/data/definitions/20.html)<br>[CWE-918: Server-Side Request Forgery (SSRF)](https://cwe.mitre.org/data/definitions/918.html) |
 
 ## Description
 
@@ -20,6 +20,7 @@ Server-Side Request Forgery (SSRF) is a vulnerability that allows attackers to i
 SSRF attacks are particularly dangerous in cloud environments where metadata services can expose sensitive information such as credentials and configuration data.
 
 Common attack patterns include:
+
 - Manipulating URL parameters to reach internal IPs (e.g., 127.0.0.1, 192.168.x.x)
 - Using alternate encoding schemes to bypass filters (e.g., decimal IPs, hex encoding)
 - Abusing URL redirects

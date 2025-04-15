@@ -5,13 +5,14 @@
 | **Rule Description** | I/O function calls should not be vulnerable to path injection attacks |
 | **Rule Kind** | Vulnerability |
 | **Mapped OWSAPs** | [A01:2021 – Broken Access Control](https://owasp.org/Top10/A01_2021-Broken_Access_Control/) |
-| **Mapped CWEs** | [CWE-22](https://cwe.mitre.org/data/definitions/22.html): Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')<br>[CWE-23](https://cwe.mitre.org/data/definitions/23.html): Relative Path Traversal<br>[CWE-35](https://cwe.mitre.org/data/definitions/35.html): Path Traversal: '.../...//' |
+| **Mapped CWEs** | [CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')](https://cwe.mitre.org/data/definitions/22.html)<br>[CWE-23: Relative Path Traversal](https://cwe.mitre.org/data/definitions/23.html)<br>[CWE-35: Path Traversal: '.../...//'](https://cwe.mitre.org/data/definitions/35.html) |
 
 ## Description
 
 Path traversal (also known as directory traversal) is a vulnerability that allows attackers to access files and directories outside of the intended directory by manipulating file paths. When applications accept user input to construct file paths without proper validation or sanitization, attackers can inject sequences like "../" to navigate up directory levels and access sensitive files elsewhere on the system.
 
 Common attack patterns include:
+
 - Using "../" sequences (e.g., "../../../etc/passwd")
 - Using encoded variants ("%2e%2e%2f")
 - Using absolute paths ("/etc/passwd")
