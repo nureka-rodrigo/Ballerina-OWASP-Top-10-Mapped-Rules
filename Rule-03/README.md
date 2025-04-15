@@ -2,70 +2,82 @@
 
 | Property | Description |
 |---------|-------------|
-| **Rule Description** | Accessing files should not lead to filesystem oracle attacks |
+| **Rule Description** | Environment variables should not be defined from untrusted input |
 | **Rule Kind** | Vulnerability |
 | **Mapped OWSAPs** | [A01:2021 – Broken Access Control](https://owasp.org/Top10/A01_2021-Broken_Access_Control/)<br>[A03:2021 – Injection](https://owasp.org/Top10/A03_2021-Injection/) |
-| **Mapped CWEs** | [CWE-20](https://cwe.mitre.org/data/definitions/20.html): Improper Input Validation<br>[CWE-22](https://cwe.mitre.org/data/definitions/22.html): Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal') |
+| **Mapped CWEs** | [CWE-20: Improper Input Validation](https://cwe.mitre.org/data/definitions/20.html)<br>[CWE-454: External Initialization of Trusted Variables or Data Stores](https://cwe.mitre.org/data/definitions/454.html) |
 
 ## Description
 
-Filesystem oracle attacks occur when applications reveal information about file existence, file attributes, or similar filesystem metadata without proper authorization. These attacks allow attackers to enumerate files and directories on the system, even if they cannot directly read the file contents.
+Environment variables are often used to store sensitive configuration data, credentials, and application settings. When applications allow untrusted input to define or modify environment variables without proper validation, they can introduce significant security risks.
 
-When applications accept user input to check if files exist or to access file metadata, and return different responses based on the results, they can inadvertently create an information oracle that attackers can exploit to:
+Using untrusted input to set environment variables can lead to various attacks:
 
-- Enumerate sensitive files on the system
-- Map the directory structure
-- Determine whether specific configuration or system files exist
-- Perform timing attacks to infer information about the filesystem
-- Gather intelligence for further attacks
+- Command injection through environment variable manipulation
+- Overriding secure configurations with malicious values
+- Cross-process information disclosure
+- Privilege escalation by altering environment variables used by other processes
+- Poisoning of configuration data that might be used for security decisions
 
-These attacks are particularly concerning because they often bypass access controls that protect file contents but not metadata queries.
+These vulnerabilities are particularly concerning because environment variables are often globally accessible within a process and can affect child processes.
 
 Common attack patterns include:
-- Testing existence of known configuration files
-- Brute-forcing filenames to map directory structures 
-- Using timing differences to determine if files exist
-- Leveraging error messages that disclose file information
-- Using path traversal techniques to probe outside allowed directories
+
+- Injecting special characters that affect shell interpretation
+- Setting environment variables to bypass security controls
+- Overriding sensitive configuration with attacker-controlled values
+- Manipulating path-related environment variables to cause unsafe program behavior
+- Using environment variables to communicate attack payloads between processes
 
 ## Non-compliant Code Example
 
 ```java
-public function main(string filename) returns error? {
-    string filePath = "/path/to/target/directory/" + filename;
-
-    boolean fileExists = check file:test(canonicalPath, file:EXISTS);
-
-    if (!fileExists) {
-        return error("File does not exist in the target directory");
+service / on new http:Listener(8080) {
+    resource function get configPath(http:Request req) {
+        string configPath = req.getQueryParamValue("path") ?: "";
+        
+        os:Error? err = os:setEnv("CONFIG_PATH", configPath);
     }
 }
 ```
 
-In this example, the application accepts a filename parameter from user input, directly concatenates it to construct a file path, and then checks if the file exists. This creates two vulnerabilities:
+In this example, the application accepts a path from a query parameter and directly sets it as an environment variable without any validation. An attacker could provide malicious paths or inject special characters that might be interpreted by the shell or other processes that read this environment variable.
 
-1. Path traversal - An attacker could provide a filename containing "../" sequences to access files outside the intended directory.
-2. Filesystem oracle - The different responses for existing vs. non-existing files allow an attacker to enumerate files on the system.
+```java
+service / on new http:Listener(8080) {
+    resource function get runCommand(http:Request req) returns string|error {
+        string commandArg = req.getQueryParamValue("arg") ?: "";
+        string envValue = req.getQueryParamValue("env") ?: "";
+        
+        os:Process|os:Error result = os:exec(
+            {value: "process-data", arguments: [commandArg]},
+            USER_CONFIG = envValue
+        );
+    }
+}
+```
 
+In this example, the application directly uses untrusted user input both as a command argument and an environment variable value without any validation or sanitization. This could lead to command injection or environment variable manipulation attacks.
 
 ## Compliant Code
 
 ```java
-public function main(string filename) returns error? {
-    string targetDir = check file:getAbsolutePath("/path/to/target/directory/");
-
-    string canonicalPath = check file:joinPath(targetDir, filename);
-
-    if (!canonicalPath.startsWith(targetDir)) {
-        return error("Entry is outside of the target directory");
-    } 
-
-    boolean fileExists = check file:test(canonicalPath, file:EXISTS);
-
-    if (!fileExists) {
-        return error("File does not exist in the target directory");
+service / on new http:Listener(8080) {
+    resource function get configPath(http:Request req) returns string|error {
+        string configPath = req.getQueryParamValue("path") ?: "";
+        
+        if regex:matches(configPath, "^[a-zA-Z0-9]*$") {
+            os:Error? err = os:setEnv("CONFIG_PATH", configPath);
+            
+            if err is os:Error {
+                return error("Failed to set environment variable");
+            }
+            return "Environment variable set successfully";
+        } else {
+            return error("Invalid input: Only alphanumeric characters are allowed");
+        }
     }
 }
 ```
 
-This approach validates that the requested file is within the intended directory, preventing path traversal attacks, and it prevents testing the existence of a file outside the intended directory.
+This approach implements proper input validation by ensuring that only alphanumeric characters are allowed in the environment variable value. It also includes appropriate error handling to manage any issues that occur during the environment variable setting process. By restricting the input to a safe character set, the code prevents injection attacks and environment variable manipulation.
