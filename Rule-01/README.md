@@ -4,7 +4,7 @@
 |---------|-------------|
 | **Rule Description** | I/O function calls should not be vulnerable to path injection attacks |
 | **Rule Kind** | Vulnerability |
-| **Mapped OWSAPs** | [Broken Access Control](https://owasp.org/Top10/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/) |
+| **Mapped OWSAPs** | [A01:2021 – Broken Access Control](https://owasp.org/Top10/A01_2021-Broken_Access_Control/) |
 | **Mapped CWEs** | [CWE-22](https://cwe.mitre.org/data/definitions/22.html): Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')<br>[CWE-23](https://cwe.mitre.org/data/definitions/23.html): Relative Path Traversal<br>[CWE-35](https://cwe.mitre.org/data/definitions/35.html): Path Traversal: '.../...//' |
 
 ## Description
@@ -23,7 +23,7 @@ The impact of successful path traversal can include unauthorized access to sensi
 
 ```java
 public function main(string filename) returns error? {
-    string filePath = "./resources/" + filename;
+    string filePath = "/path/to/target/directory/" + filename;
 
     check file:remove(filePath);
 }
@@ -35,14 +35,11 @@ In this example, the application directly concatenates user input to form a file
 
 ```java
 public function main(string filename) returns error? {
-    // Define base resource directory as an absolute path
-    string resourceDir = check file:getAbsolutePath("./resources");
+    string targetDir = check file:getAbsolutePath("/path/to/target/directory/");
 
-    // Construct canonical path
-    string canonicalPath = check file:joinPath(resourceDir, filename);
+    string canonicalPath = check file:joinPath(targetDir, filename);
 
-    // Verify the canonicalized path is still within the resource directory
-    if (!canonicalPath.startsWith(resourceDir)) {
+    if (!canonicalPath.startsWith(targetDir)) {
         io:println("Path traversal attempt detected");
         return error("Security violation: Attempted to access file outside allowed directory");
     }
@@ -52,12 +49,3 @@ public function main(string filename) returns error? {
 ```
 
 This approach resolves both the base directory and the requested file path to their canonical (absolute) forms, then verifies that the resulting path is still within the allowed directory. This approach handles complex traversal attempts by using the file system's own path resolution capabilities rather than trying to detect all possible traversal patterns.
-
-## Best Practices
-
-1. Never directly incorporate user input into file paths without validation.
-2. Use absolute paths with a whitelist approach whenever possible.
-3. Implement proper input validation with strong regular expressions.
-4. Use canonical path resolution and verify the final path is within allowed boundaries.
-5. Apply the principle of least privilege for file system operations.
-6. Consider using file access abstractions rather than direct file paths.
