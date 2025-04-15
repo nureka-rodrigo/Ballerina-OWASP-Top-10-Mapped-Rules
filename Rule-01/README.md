@@ -2,11 +2,10 @@
 
 | Property | Description |
 |---------|-------------|
-| **Rule ID** | ballerina/io:1 |
 | **Rule Description** | I/O function calls should not be vulnerable to path injection attacks |
 | **Rule Kind** | Vulnerability |
+| **Mapped OWSAPs** | [Broken Access Control](https://owasp.org/Top10/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/) |
 | **Mapped CWEs** | [CWE-22](https://cwe.mitre.org/data/definitions/22.html): Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')<br>[CWE-23](https://cwe.mitre.org/data/definitions/23.html): Relative Path Traversal<br>[CWE-35](https://cwe.mitre.org/data/definitions/35.html): Path Traversal: '.../...//' |
-
 
 ## Non-compliant Code Example
 
