@@ -7,7 +7,19 @@
 | **Mapped OWSAPs** | [Broken Access Control](https://owasp.org/Top10/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/) |
 | **Mapped CWEs** | [CWE-22](https://cwe.mitre.org/data/definitions/22.html): Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')<br>[CWE-23](https://cwe.mitre.org/data/definitions/23.html): Relative Path Traversal<br>[CWE-35](https://cwe.mitre.org/data/definitions/35.html): Path Traversal: '.../...//' |
 
-## Non-compliant Code Example
+## Description
+
+Path traversal (also known as directory traversal) is a vulnerability that allows attackers to access files and directories outside of the intended directory by manipulating file paths. When applications accept user input to construct file paths without proper validation or sanitization, attackers can inject sequences like "../" to navigate up directory levels and access sensitive files elsewhere on the system.
+
+Common attack patterns include:
+- Using "../" sequences (e.g., "../../../etc/passwd")
+- Using encoded variants ("%2e%2e%2f")
+- Using absolute paths ("/etc/passwd")
+- Using nested traversals that survive simple sanitization ("..././../..")
+
+The impact of successful path traversal can include unauthorized access to sensitive files, configuration data, or even system files, potentially leading to information disclosure, privilege escalation, or remote code execution.
+
+## Non-compliant Code
 
 ```java
 public function main(string filename) returns error? {
@@ -17,28 +29,9 @@ public function main(string filename) returns error? {
 }
 ```
 
-## Compliant Code Examples
+In this example, the application directly concatenates user input to form a file path without any validation or sanitization. An attacker could provide a filename like "../../../etc/passwd" to delete critical system files or access sensitive data outside the resources directory.
 
-### Use regex to validate inputs before use
-
-```java
-public function main(string filename) returns error? {
-    // Only allow alphanumeric characters, underscore, hyphen and specific extensions
-    regexp:RegExp validFilenamePattern = check regexp:fromString("^[a-zA-Z0-9_-]$");
-    boolean isValid = validFilenamePattern.isFullMatch(filename);
-
-    if (!isValid) {
-        io:println("Invalid filename pattern");
-        return error("Invalid filename: only alphanumeric filenames are allowed");
-    }
-
-    string filePath = "./resources/" + filename;
-
-    check file:remove(filePath);
-}
-```
-
-### Resolve path and verify it's within allowed directory
+## Compliant Code
 
 ```java
 public function main(string filename) returns error? {
@@ -58,25 +51,13 @@ public function main(string filename) returns error? {
 }
 ```
 
-### Use a predefined map of allowed files
+This approach resolves both the base directory and the requested file path to their canonical (absolute) forms, then verifies that the resulting path is still within the allowed directory. This approach handles complex traversal attempts by using the file system's own path resolution capabilities rather than trying to detect all possible traversal patterns.
 
-```java
-public function main(string filename) returns error? {
-    // Define a mapping of allowed file identifiers to actual paths
-    map<string> allowedFiles = {
-        "config": "./resources/config.json",
-        "readme": "./resources/readme.txt",
-        "report": "./resources/report.pdf"
-    };
+## Best Practices
 
-    // Check if the requested file is in the allowed list
-    string? filePath = allowedFiles[filename];
-
-    if (filePath is ()) {
-        io:println("Requested file not found in allowed list");
-        return error("Unknown file identifier: " + filename);
-    }
-
-    check file:remove(filePath);
-}
-```
+1. Never directly incorporate user input into file paths without validation.
+2. Use absolute paths with a whitelist approach whenever possible.
+3. Implement proper input validation with strong regular expressions.
+4. Use canonical path resolution and verify the final path is within allowed boundaries.
+5. Apply the principle of least privilege for file system operations.
+6. Consider using file access abstractions rather than direct file paths.
