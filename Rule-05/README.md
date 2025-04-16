@@ -43,7 +43,6 @@ In this non-compliant example, the initialization vector is hardcoded, meaning e
 
 ## Compliant Code
 
-
 ```java
 public function main(string data) returns [byte[], byte[16]]|error {
     byte[16] initialVector = [];
