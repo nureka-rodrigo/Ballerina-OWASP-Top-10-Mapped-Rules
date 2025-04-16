@@ -11,23 +11,23 @@
 
 Environment variables are often used to store sensitive configuration data, credentials, and application settings. When applications allow untrusted input to define or modify environment variables without proper validation, they can introduce significant security risks.
 
-Using untrusted input to set environment variables can lead to various attacks:
+Using untrusted input to set environment variables can lead to various security concerns:
 
-- Command injection through environment variable manipulation
 - Overriding secure configurations with malicious values
 - Cross-process information disclosure
-- Privilege escalation by altering environment variables used by other processes
 - Poisoning of configuration data that might be used for security decisions
+- Manipulation of application behavior through environment variable values
+- Creation of inconsistent application states
 
 These vulnerabilities are particularly concerning because environment variables are often globally accessible within a process and can affect child processes.
 
-Common attack patterns include:
+Common attack patterns specific to environment variables include:
 
-- Injecting special characters that affect shell interpretation
 - Setting environment variables to bypass security controls
 - Overriding sensitive configuration with attacker-controlled values
 - Manipulating path-related environment variables to cause unsafe program behavior
-- Using environment variables to communicate attack payloads between processes
+- Using environment variables to store and propagate malicious data
+- Interfering with application logic that depends on environment variable values
 
 ## Non-compliant Code
 
@@ -42,22 +42,6 @@ service / on new http:Listener(8080) {
 ```
 
 In this example, the application accepts a path from a query parameter and directly sets it as an environment variable without any validation. An attacker could provide malicious paths or inject special characters that might be interpreted by the shell or other processes that read this environment variable.
-
-```java
-service / on new http:Listener(8080) {
-    resource function get runCommand(http:Request req) returns string|error {
-        string commandArg = req.getQueryParamValue("arg") ?: "";
-        string envValue = req.getQueryParamValue("env") ?: "";
-        
-        os:Process|os:Error result = os:exec(
-            {value: "process-data", arguments: [commandArg]},
-            USER_CONFIG = envValue
-        );
-    }
-}
-```
-
-In this example, the application directly uses untrusted user input both as a command argument and an environment variable value without any validation or sanitization. This could lead to command injection or environment variable manipulation attacks.
 
 ## Compliant Code
 
