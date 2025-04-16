@@ -26,7 +26,7 @@ The risks of hard-coded credentials include:
 - Difficulty in tracking who has access to the credentials
 - Challenges in implementing proper credential rotation policies
 
-## Non-compliant Code Example
+## Non-compliant Code
 
 ```java
 service / on new http:Listener(8080) {

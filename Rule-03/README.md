@@ -29,7 +29,7 @@ Common attack patterns include:
 - Manipulating path-related environment variables to cause unsafe program behavior
 - Using environment variables to communicate attack payloads between processes
 
-## Non-compliant Code Example
+## Non-compliant Code
 
 ```java
 service / on new http:Listener(8080) {
