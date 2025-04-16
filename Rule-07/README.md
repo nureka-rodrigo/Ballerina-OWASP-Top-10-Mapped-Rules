@@ -5,7 +5,7 @@
 | **Rule Description** | Applications should not create session cookies from untrusted input |
 | **Rule Kind** | Vulnerability |
 | **Mapped OWSAPs** | [A03:2021 – Injections](https://owasp.org/Top10/A03_2021-Injection/) |
-| **Mapped CWEs** | [CWE-20: Improper Input Validation](https://cwe.mitre.org/data/definitions/20.html)<br>[CWE-384: Session Fixation](https://cwe.mitre.org/data/definitions/73846.html) |
+| **Mapped CWEs** | [CWE-20: Improper Input Validation](https://cwe.mitre.org/data/definitions/20.html)<br>[CWE-384: Session Fixation](https://cwe.mitre.org/data/definitions/384.html) |
 
 ## Description
 
