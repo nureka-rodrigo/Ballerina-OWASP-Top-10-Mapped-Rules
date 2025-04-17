@@ -56,4 +56,5 @@ Unauthenticated modes such as CBC (Cipher Block Chaining) may be used but are pr
 ```java
 byte[] cipherText = check crypto:encryptAesGcm(data, key, initialVector);
 ```
+
 AES-GCM (Galois/Counter Mode) provides authenticated encryption, ensuring both confidentiality and integrity of the encrypted data.

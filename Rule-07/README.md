@@ -70,4 +70,5 @@ service / on new http:Listener(8080) {
     }
 }
 ```
+
 This compliant approach generates a secure random session identifier using the UUID module instead of accepting user input. By generating session IDs internally, the application prevents attackers from knowing session identifiers in advance, which mitigates session fixation attacks.

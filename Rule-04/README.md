@@ -44,7 +44,6 @@ In this example, the database credentials are hard-coded directly in the service
 
 ## Compliant Code
 
-
 ```java
 configurable string dbHost = os:getEnv("DB_HOST") ?: "localhost";
 configurable string dbUser = os:getEnv("DB_USER");

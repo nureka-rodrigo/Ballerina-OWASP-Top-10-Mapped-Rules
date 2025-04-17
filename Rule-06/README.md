@@ -78,4 +78,5 @@ service / on new http:Listener(8080) {
     }
 }
 ```
+
 This compliant approach uses Ballerina's native JSON handling capabilities to create a JSON object directly from variables rather than building a JSON string through concatenation or interpolation. By using the language's type system and JSON structure construction, the special characters in user input are automatically escaped properly, preventing injection attacks while maintaining the intended JSON structure.
