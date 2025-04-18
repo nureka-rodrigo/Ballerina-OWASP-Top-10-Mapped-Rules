@@ -27,16 +27,6 @@ Common vulnerable patterns include:
 - Relying on outdated padding methods like PKCS1v1.5
 - Using stream ciphers with insufficient initialization vectors
 
-Using weak encryption algorithms, modes, or padding schemes can lead to:
-
-1. **Theft of sensitive data**: Encrypted messages might contain sensitive information that shouldn't be exposed to third parties. Weak algorithms significantly increase the possibility of an attacker recovering the plaintext.
-
-2. **Additional attack surface**: By modifying the plaintext of encrypted messages, attackers might trigger other vulnerabilities in the code. Since encrypted values are often considered trusted, this can lead to unexpected security breaches.
-
-3. **Pattern analysis**: In modes like ECB, patterns in the original data remain visible in the encrypted output, potentially revealing information about the plaintext without fully decrypting it.
-
-4. **Integrity violations**: Without authenticated encryption, attackers may be able to manipulate encrypted data without detection, potentially leading to unintended system behavior.
-
 ## Non-compliant Code
 
 ```java
