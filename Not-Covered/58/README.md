@@ -2,10 +2,10 @@
 
 | Property | Description |
 |---------|-------------|
-| **Rule Description** | Avoid revealing sensitive error information |
+| **Rule Description** | Stack traces should not be disclosed |
 | **Rule Kind** | Vulnerability |
 | **Mapped OWSAPs** | [A04:2021 – Insecure Design](https://owasp.org/Top10/A01_2021-Broken_Access_Control/) |
-| **Mapped CWEs** | [CWE-209: Generation of Error Message Containing Sensitive Information](https://cwe.mitre.org/data/definitions/209.html) |
+| **Mapped CWEs** | <[CWE-209: Generation of Error Message Containing Sensitive Information](https://cwe.mitre.org/data/definitions/209.html)><br>[CWE-489: Active Debug Code](https://cwe.mitre.org/data/definitions/489.html) |
 
 ## Description
 
@@ -36,7 +36,7 @@ service / on new http:Listener(8080) {
 
         if (result is io:Error) {
             log:printError("Error reading file: ", result);
-            return "Error: " + result.message();
+            return "Error: " + result.stackTrace().toString();
         }
 
         return "File read successfully!";
@@ -44,7 +44,7 @@ service / on new http:Listener(8080) {
 }
 ```
 
-In this non-compliant example, the application returns the actual error message to the client. This could reveal sensitive information like file paths, access permissions, or system configuration details that an attacker could leverage to plan further attacks.
+In this non-compliant example, the application returns the full stack trace to the client. This exposes significantly more sensitive information than a regular error message, including detailed file paths, method call sequences, line numbers, and internal system architecture details. Attackers can use this comprehensive debugging information to map out the application's structure and vulnerabilities, making it even easier to plan sophisticated attacks against the system.
 
 ## Compliant Code
 
@@ -64,3 +64,7 @@ service / on new http:Listener(8080) {
 ```
 
 The compliant code properly handles errors by returning only a generic error message to the user that doesn't reveal sensitive system details. This approach ensures users receive appropriate feedback while preventing the exposure of information that could aid malicious actors.
+
+## Reference
+
+[SonarQube Rule: Stack traces should not be disclosed](https://rules.sonarsource.com/python/RSPEC-6776/)

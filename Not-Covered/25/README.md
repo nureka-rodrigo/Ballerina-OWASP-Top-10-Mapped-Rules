@@ -53,3 +53,7 @@ public function main() {
 ```
 
 This compliant code explicitly sets the security mode to SSL, ensuring that not only is the connection encrypted, but also that the server's hostname is properly verified against its certificate. By explicitly configuring the security settings, the application ensures that it connects only to the intended server, protecting against potential man-in-the-middle attacks.
+
+## Reference
+
+[SonarQube Rule: Server hostnames should be verified during SSL/TLS connections](https://rules.sonarsource.com/java/RSPEC-5527/)

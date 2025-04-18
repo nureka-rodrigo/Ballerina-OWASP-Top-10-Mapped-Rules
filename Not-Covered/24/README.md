@@ -48,3 +48,7 @@ byte[] cipherText = check crypto:encryptAesGcm(data, key, initialVector);
 ```
 
 AES-GCM (Galois/Counter Mode) provides authenticated encryption, ensuring both confidentiality and integrity of the encrypted data.
+
+## Reference
+
+[SonarQube Rule: Encryption algorithms should be used with secure mode and padding scheme](https://rules.sonarsource.com/java/RSPEC-5542/)

@@ -60,3 +60,7 @@ service / on new http:Listener(8080) {
 ```
 
 This approach uses proper URL encoding for the user-supplied parameter, ensuring that special characters in the input cannot manipulate the URL structure or introduce unintended path components.
+
+## Reference
+
+[SonarQube Rule: Server-side requests should not be vulnerable to traversing attacks](https://rules.sonarsource.com/java/RSPEC-7044/)

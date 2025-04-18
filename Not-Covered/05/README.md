@@ -62,3 +62,7 @@ public function main(string data) returns [byte[], byte[16]]|error {
 ```
 
 This compliant approach generates a cryptographically secure random initialization vector for each encryption operation and returns it along with the encrypted data. The IV must be stored alongside the encrypted data (but doesn't need to be kept secret) to allow for decryption later.
+
+## Reference
+
+[SonarQube Rule: Counter Mode initialization vectors should not be reused](https://rules.sonarsource.com/java/RSPEC-6432/)

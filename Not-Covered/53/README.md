@@ -50,3 +50,7 @@ public function main(string filename) returns error? {
 ```
 
 This approach resolves both the base directory and the requested file path to their canonical (absolute) forms, then verifies that the resulting path is still within the allowed directory. This approach handles complex traversal attempts by using the file system's own path resolution capabilities rather than trying to detect all possible traversal patterns.
+
+## Reference
+
+[SonarQube Rule: I/O function calls should not be vulnerable to path injection attackss](https://rules.sonarsource.com/java/RSPEC-2083/)

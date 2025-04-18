@@ -78,3 +78,7 @@ service / on new http:Listener(8080) {
 ```
 
 This compliant code implements proper validation by checking the redirect URL against a whitelist of trusted domains. If the URL doesn't match any trusted domain, the application rejects the redirect request with an error message. This approach prevents attackers from redirecting users to malicious sites, allowing only redirects to specifically approved destinations.
+
+## Reference
+
+[SonarQube Rule: HTTP request redirections should not be open to forging attacks](https://rules.sonarsource.com/java/RSPEC-5146/)

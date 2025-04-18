@@ -65,3 +65,7 @@ service / on new http:Listener(8080) {
 ```
 
 This approach implements proper input validation by ensuring that only alphanumeric characters are allowed in the environment variable value. It also includes appropriate error handling to manage any issues that occur during the environment variable setting process. By restricting the input to a safe character set, the code prevents injection attacks and environment variable manipulation.
+
+## Reference
+
+[SonarQube Rule: Environment variables should not be defined from untrusted input](https://rules.sonarsource.com/java/RSPEC-6547/)

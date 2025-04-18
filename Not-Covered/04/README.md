@@ -63,3 +63,7 @@ service / on new http:Listener(8080) {
 ```
 
 This compliant approach uses Ballerina's configurable variables and environment variables to retrieve sensitive credentials at runtime rather than hard-coding them. The credentials can be securely configured during deployment without modifying code, and they aren't stored in source control.
+
+## Reference
+
+[SonarQube Rule: Credentials should not be hard-coded](https://rules.sonarsource.com/java/RSPEC-6437/)
