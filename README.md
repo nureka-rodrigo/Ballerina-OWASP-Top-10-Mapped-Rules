@@ -22,7 +22,7 @@ To use these rules in your Ballerina project:
 
 2. Follow the individual rule documentation for implementation details.
 
-## Mapped Vulnerabilities
+## Mapped Rules
 
 01. [Server-side requests should not be vulnerable to traversing attacks](./Not-Covered/01/README.md)
 02. [Accessing files should not lead to filesystem oracle attacks](README.md)
