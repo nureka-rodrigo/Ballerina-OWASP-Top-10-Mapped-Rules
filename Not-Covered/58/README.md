@@ -5,7 +5,7 @@
 | **Rule Description** | Stack traces should not be disclosed |
 | **Rule Kind** | Vulnerability |
 | **Mapped OWSAPs** | [A04:2021 – Insecure Design](https://owasp.org/Top10/A01_2021-Broken_Access_Control/) |
-| **Mapped CWEs** | <[CWE-209: Generation of Error Message Containing Sensitive Information](https://cwe.mitre.org/data/definitions/209.html)><br>[CWE-489: Active Debug Code](https://cwe.mitre.org/data/definitions/489.html) |
+| **Mapped CWEs** | [CWE-209: Generation of Error Message Containing Sensitive Information](https://cwe.mitre.org/data/definitions/209.html)<br>[CWE-489: Active Debug Code](https://cwe.mitre.org/data/definitions/489.html) |
 
 ## Description
 
